@@ -1,0 +1,10 @@
+br\com\spark\monolito\api\controller\OrderItemResource.class
+br\com\spark\monolito\api\controller\CustomerController.class
+br\com\spark\monolito\api\controller\OrderController.class
+br\com\spark\monolito\api\controller\PaymentController.class
+br\com\spark\monolito\api\controller\ProductController.class
+br\com\spark\monolito\infrastructure\config\SwaggerConfiguration.class
+br\com\spark\monolito\api\controller\CartController.class
+br\com\spark\monolito\infrastructure\web\Web.class
+br\com\spark\monolito\api\controller\ReviewController.class
+br\com\spark\monolito\api\controller\CategoryController.class
