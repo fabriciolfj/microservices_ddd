@@ -7,6 +7,4 @@ import java.util.Arrays;
 import java.util.List;
 
 public interface OrderRepository extends JpaRepository<Order, Long> {
-
-    List<Order> findByCartCustomer_id(Long id);
 }

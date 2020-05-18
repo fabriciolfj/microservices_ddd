@@ -34,10 +34,6 @@ public class OrderService {
         return this.orderRepository.findById(id).map(OrderService::mapToDto).orElse(null);
     }
 
-    public List<OrderDto> findAllByUser(Long id) {
-        return this.orderRepository.findByCartCustomer_id(id).stream().map(OrderService::mapToDto).collect(Collectors.toList());
-    }
-
     public OrderDto create(OrderDto orderDto) {
         log.debug("Request to create Order : {}", orderDto);
         return mapToDto(this.orderRepository.save(new Order(BigDecimal.ZERO, OrderStatus.CREATION, null, null, null, Collections.emptySet())));
