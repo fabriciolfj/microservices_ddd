@@ -45,7 +45,7 @@ public class CartService {
                     .orElseThrow(() -> new IllegalStateException("The Customer does not exist!"));
 
             var cart = new Cart(null, customer, CartStatus.NEW);
-            var order = this.orderService.create(cart);
+            var order = this.orderService.create();
             cart.setOrder(order);
             return mapToDto(this.cartRepository.save(cart));
         }

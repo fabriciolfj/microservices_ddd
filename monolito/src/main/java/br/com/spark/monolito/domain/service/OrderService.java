@@ -40,12 +40,12 @@ public class OrderService {
 
     public OrderDto create(OrderDto orderDto) {
         log.debug("Request to create Order : {}", orderDto);
-        return mapToDto(this.orderRepository.save(new Order(BigDecimal.ZERO, OrderStatus.CREATION, null, null, null, Collections.emptySet(), null)));
+        return mapToDto(this.orderRepository.save(new Order(BigDecimal.ZERO, OrderStatus.CREATION, null, null, null, Collections.emptySet())));
     }
 
-    public Order create(Cart cart) {
-        log.debug("Request to create Order with a Cart : {}", cart);
-        return this.orderRepository.save(new Order(BigDecimal.ZERO, OrderStatus.CREATION, null, null, null, Collections.emptySet(), cart));
+    public Order create() {
+        log.debug("Request to create Order");
+        return this.orderRepository.save(new Order(BigDecimal.ZERO, OrderStatus.CREATION, null, null, null, Collections.emptySet()));
     }
 
     public void delete(Long id) {
