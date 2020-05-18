@@ -44,9 +44,8 @@ public class CartService {
             var customer = this.customerRepository.findById(customerId)
                     .orElseThrow(() -> new IllegalStateException("The Customer does not exist!"));
 
-            var cart = new Cart(null, customer, CartStatus.NEW);
             var order = this.orderService.create();
-            cart.setOrder(order);
+            var cart = new Cart(order, customer, CartStatus.NEW);
             return mapToDto(this.cartRepository.save(cart));
         }
 
@@ -72,7 +71,7 @@ public class CartService {
                 .filter(c -> !c.isEmpty())
                 .filter(carts -> carts.size() == 1)
                 .map(carts -> mapToDto(carts.get(0)))
-                .orElseThrow(() -> new IllegalStateException("There is already an active cart"));
+                .orElse(null);
     }
 
     public static CartDto mapToDto(Cart cart) {

@@ -1,18 +1,15 @@
 package br.com.spark.monolito.domain.model;
 
 import br.com.spark.monolito.domain.model.enuns.PaymentStatus;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "payment")
 public class Payment {

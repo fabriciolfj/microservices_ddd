@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -46,10 +47,16 @@ public class OrderItemService {
 
     public OrderItemDto create(final OrderItemDto orderItemDto) {
         log.debug("Request to create OrderItem : {}", orderItemDto);
-        Order order = this.orderRepository.findById(orderItemDto.getOrderId()).orElseThrow(() -> new IllegalStateException("The Order does not exist!"));
-        Product product = this.productRepository.findById(orderItemDto.getProductId()).orElseThrow(()  ->
-        new IllegalStateException("The Product does not exist!"));
-        return mapToDto(this.orderItemRepository.save(new OrderItem(orderItemDto.getQuantity(), product, order)));
+        var order = this.orderRepository.findById(orderItemDto.getOrderId()).orElseThrow(() ->new IllegalStateException("The Order does not exist!"));
+        var product = this.productRepository.findById(orderItemDto.getProductId()).orElseThrow(()  -> new IllegalStateException("The Product does not exist!"));
+        var orderItem = new OrderItem(orderItemDto.getQuantity(), product, order);
+        updateTotalOrder(order, orderItem);
+        return mapToDto(this.orderItemRepository.save(orderItem));
+    }
+
+    private void updateTotalOrder(Order order, OrderItem orderItem) {
+        order.updateTotal(orderItem.getProduct().getPrice(), orderItem.getQuantity());
+        orderRepository.save(order);
     }
 
     public void delete(Long id) {

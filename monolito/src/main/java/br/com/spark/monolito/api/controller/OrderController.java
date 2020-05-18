@@ -1,5 +1,6 @@
 package br.com.spark.monolito.api.controller;
 
+import br.com.spark.monolito.domain.dto.OrderAddressDto;
 import br.com.spark.monolito.domain.dto.OrderDto;
 import br.com.spark.monolito.domain.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -29,5 +30,11 @@ public class OrderController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         this.orderService.delete(id);
+    }
+
+
+    @PutMapping("/{id}")
+    public void update(@PathVariable Long id, @RequestBody OrderAddressDto dto) {
+        this.orderService.update(id, dto);
     }
 }

@@ -1,6 +1,7 @@
 package br.com.spark.monolito.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -13,6 +14,7 @@ import java.time.Instant;
 
 @Getter
 @Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class AbstractEntity  implements Serializable {
@@ -20,6 +22,7 @@ public abstract class AbstractEntity  implements Serializable {
     private static final long serialVersionUID = 508733338514742319L;
 
     @Id
+    @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 

@@ -12,7 +12,7 @@ import static br.com.spark.monolito.infrastructure.web.Web.API;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(API + "/order-items")
-public class OrderItemResource {
+public class OrderItemController {
 
     private final OrderItemService itemService;
 

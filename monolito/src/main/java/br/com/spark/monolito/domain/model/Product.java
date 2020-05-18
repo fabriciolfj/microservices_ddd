@@ -1,10 +1,7 @@
 package br.com.spark.monolito.domain.model;
 
 import br.com.spark.monolito.domain.model.enuns.ProductStatus;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,10 +9,10 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "product")
 public class Product extends AbstractEntity {
@@ -44,6 +41,7 @@ public class Product extends AbstractEntity {
     private Integer salesCounter;
 
     @ManyToOne
+    @JoinColumn(name = "category_id")
     private Category category;
 
     @OneToMany(mappedBy = "product")

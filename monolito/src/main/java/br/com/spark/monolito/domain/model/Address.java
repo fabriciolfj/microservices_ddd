@@ -28,11 +28,11 @@ public class Address {
 
     @NotNull
     @Size(max = 10)
-    @Column(name = "postcode", length = 10, nullable = false)
+    @Column(name = "postcode", length = 10)
     private String postCode;
 
     @NotNull
     @Size(max = 2)
-    @Column(name = "country", length = 2, nullable = false)
+    @Column(name = "country", length = 2)
     private String country;
 }

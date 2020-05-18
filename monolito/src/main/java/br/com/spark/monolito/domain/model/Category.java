@@ -1,10 +1,7 @@
 package br.com.spark.monolito.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,10 +11,10 @@ import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
 @Entity
 @Table(name = "category")
 public class Category extends AbstractEntity {

@@ -1,6 +1,8 @@
 package br.com.spark.monolito.domain.service;
 
+import br.com.spark.monolito.domain.dto.OrderAddressDto;
 import br.com.spark.monolito.domain.dto.OrderDto;
+import br.com.spark.monolito.domain.model.Address;
 import br.com.spark.monolito.domain.model.Cart;
 import br.com.spark.monolito.domain.model.Order;
 import br.com.spark.monolito.domain.model.enuns.OrderStatus;
@@ -10,8 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.jaxb.SpringDataJaxb;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -61,5 +65,16 @@ public class OrderService {
         }
 
         return null;
+    }
+
+    public void update(Long id, OrderAddressDto dto) {
+        orderRepository.findById(id)
+                .map(o -> {
+                    var address = new Address(dto.getAddress1(), dto.getAddress2(), dto.getCity(), dto.getPostCode(), dto.getCountry());
+                    o.setShipmentAddress(address);
+                    o.setShipped(ZonedDateTime.now());
+                    return orderRepository.save(o);
+                })
+                .orElseThrow(() -> new RuntimeException("Order not found: " + id));
     }
 }

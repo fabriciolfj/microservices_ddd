@@ -5,7 +5,6 @@ import br.com.spark.monolito.domain.model.Address;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @RequiredArgsConstructor
