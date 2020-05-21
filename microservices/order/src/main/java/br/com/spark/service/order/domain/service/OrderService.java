@@ -2,7 +2,6 @@ package br.com.spark.service.order.domain.service;
 
 import br.com.spark.service.order.api.dto.response.OrderResponseDto;
 import br.com.spark.service.order.api.dto.response.mapper.order.OrderResponseMapper;
-import br.com.spark.service.order.domain.core.integration.client.CustomerServiceClient;
 import br.com.spark.service.order.domain.exceptions.OrderDuplicatePaymentException;
 import br.com.spark.service.order.domain.exceptions.OrderNotFoundException;
 import br.com.spark.service.order.domain.model.Address;
@@ -32,7 +31,7 @@ public class OrderService {
     private final OrderResponseMapper mapper;
     private final OrderItemService orderItemService;
     private final ProductService productService;
-    private final CustomerServiceClient customerServiceClient;
+    private final CustomerService customerService;
 
     @Transactional(readOnly = true, propagation = Propagation.NEVER)
     public List<OrderResponseDto> findAll() {
@@ -54,7 +53,7 @@ public class OrderService {
     @Transactional(propagation = Propagation.REQUIRED)
     public OrderResponseDto create(final Order order) {
         log.debug("Request to create Order : {}", order);
-        customerServiceClient.getCustomer(order.getCustomerId());
+        customerService.getCustomer(order.getCustomerId());
 
         order.setShipped(LocalDate.now());
         order.getOrderItems().stream().forEach(this::getPriceItem);
