@@ -1,6 +1,9 @@
 package br.com.spark.service.customer.api.controller;
 
-import br.com.spark.service.customer.api.dto.CustomerDto;
+import br.com.spark.service.customer.api.dto.CustomerRequestDto;
+import br.com.spark.service.customer.api.dto.CustomerResponseDto;
+import br.com.spark.service.customer.api.mapper.CustomerResponseMapper;
+import br.com.spark.service.customer.api.mapper.CustomerResquestMapper;
 import br.com.spark.service.customer.domain.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static br.com.spark.service.customer.infrastructure.web.Web.API;
 
@@ -22,30 +27,27 @@ import static br.com.spark.service.customer.infrastructure.web.Web.API;
 public class CustomerController {
 
     private final CustomerService customerService;
+    private final CustomerResquestMapper resquestMapper;
+    private final CustomerResponseMapper responseMapper;
 
     @GetMapping
-    public List<CustomerDto> findAll() {
-        return customerService.findAll();
+    public List<CustomerResponseDto> findAll() {
+        return customerService
+                .findAll()
+                .stream()
+                .map(responseMapper::toDto)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public CustomerDto findById(@PathVariable Long id) {
-        return this.customerService.findById(id);
-    }
-
-    @GetMapping("/active")
-    public List<CustomerDto> findAllActive() {
-        return this.customerService.findAllActive();
-    }
-
-    @GetMapping("/inactive")
-    public List<CustomerDto> findAllInactive() {
-        return this.customerService.findAllInactive();
+    public CustomerResponseDto findById(@PathVariable Long id) {
+        return Optional.of(this.customerService.findById(id))
+                .map(responseMapper::toDto).get();
     }
 
     @PostMapping
-    public CustomerDto create(@RequestBody final CustomerDto customerDto) {
-        return this.customerService.create(customerDto);
+    public CustomerResponseDto create(@RequestBody final CustomerRequestDto customerDto) {
+        return responseMapper.toDto(customerService.create(resquestMapper.toDomain(customerDto)));
     }
 
     @DeleteMapping("/{id}")

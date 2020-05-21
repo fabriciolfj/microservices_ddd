@@ -2,6 +2,7 @@ package br.com.spark.service.order.domain.service;
 
 import br.com.spark.service.order.api.dto.response.OrderResponseDto;
 import br.com.spark.service.order.api.dto.response.mapper.order.OrderResponseMapper;
+import br.com.spark.service.order.domain.core.integration.client.ProductServiceClient;
 import br.com.spark.service.order.domain.exceptions.OrderDuplicatePaymentException;
 import br.com.spark.service.order.domain.exceptions.OrderNotFoundException;
 import br.com.spark.service.order.domain.model.Address;
@@ -30,6 +31,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderResponseMapper mapper;
     private final OrderItemService orderItemService;
+    private final ProductServiceClient productServiceClient;
 
     @Transactional(readOnly = true, propagation = Propagation.NEVER)
     public List<OrderResponseDto> findAll() {
@@ -49,12 +51,19 @@ public class OrderService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public OrderResponseDto create(Order order) {
+    public OrderResponseDto create(final Order order) {
         log.debug("Request to create Order : {}", order);
         order.setShipped(LocalDate.now());
-
+        order.getOrderItems().stream().forEach(this::getPriceItem);
+        order.updateTotal();
         orderRepository.save(order);
         return mapper.toDto(order);
+    }
+
+    private OrderItem getPriceItem(final OrderItem item) {
+        var dto = productServiceClient.findByProduct(item.getProductId());
+        item.setPrice(dto.getPrice());
+        return item;
     }
 
     public void delete(Long id) {
@@ -70,20 +79,30 @@ public class OrderService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public OrderResponseDto addItem(OrderItem item, Long orderId) {
+    public OrderResponseDto addItem(OrderItem item, final Long orderId) {
         var order = findEntity(orderId);
-        order.addItens(item);
 
-        saveItem(item, order);
+        item = getPriceItem(item);
+        addItens(item, order);
 
+        order.updateTotal();
         orderRepository.save(order);
         orderRepository.flush();
         return mapper.toDto(order);
     }
 
-    private void saveItem(OrderItem item, Order order) {
-        item.setOrder(order);
-        orderItemService.create(item);
+    public void addItens(OrderItem orderItem, Order order) {
+        order.getOrderItems().stream()
+                .filter(i -> i.getProductId().equals(orderItem.getProductId()))
+                .findAny()
+                .ifPresentOrElse(p -> {
+                    p.setQuantity(p.getQuantity() + orderItem.getQuantity());
+                    p.setPrice(orderItem.getPrice());
+                }, () -> {
+                    orderItem.setOrder(order);
+                    order.getOrderItems().add(orderItem);
+                    orderItemService.create(orderItem);
+                });
     }
 
     @Transactional(propagation = Propagation.REQUIRED)

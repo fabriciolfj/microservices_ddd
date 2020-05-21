@@ -15,6 +15,4 @@ public class OrderItemRequestDto {
     private Long productId;
     @Positive
     private Long quantity;
-    @NotNull
-    private BigDecimal price;
 }

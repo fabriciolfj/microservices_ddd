@@ -35,6 +35,7 @@ public class OrderItem {
     @Column(name = "price", nullable = false)
     private BigDecimal price;
 
+    @EqualsAndHashCode.Include
     @Column(name = "product_id")
     private Long productId;
 

@@ -4,6 +4,7 @@ import br.com.spark.service.order.domain.exceptions.OrderDuplicatePaymentExcepti
 import br.com.spark.service.order.domain.exceptions.OrderItemNotFoundException;
 import br.com.spark.service.order.domain.exceptions.OrderNotFoundException;
 import br.com.spark.service.order.domain.exceptions.PaymentNotFoundException;
+import br.com.spark.service.order.domain.exceptions.ProductClientException;
 import br.com.spark.service.order.domain.exceptions.StatusCartInvalidException;
 import br.com.spark.service.order.domain.exceptions.StatusOrderInvalidException;
 import br.com.spark.service.order.domain.exceptions.StatusPaymentInvalidException;
@@ -153,6 +154,11 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(StatusOrderInvalidException.class)
     public ResponseEntity<?> handleStatusOrderInvalidException(StatusOrderInvalidException e, WebRequest request){
+        return handleExceptionInternal(e, e.getMessage(), new HttpHeaders(), HttpStatus.CONFLICT, request);
+    }
+
+    @ExceptionHandler(ProductClientException.class)
+    public ResponseEntity<?> handleStatusProductClientException(ProductClientException e, WebRequest request){
         return handleExceptionInternal(e, e.getMessage(), new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
 

@@ -19,7 +19,8 @@ public abstract class OrderRequestMapperDecorator implements OrderRequestMapper 
     @Override
     public Order toDomain(OrderRequestDto dto) {
         var order = mapper.toDomain(dto);
-        convertOrderItemDtoToDomain(dto.getOrderItems(), order).forEach(item -> order.addItens(item));
+        var items = convertOrderItemDtoToDomain(dto.getOrderItems(), order);
+        order.setOrderItems(items);
         return order;
     }
 
@@ -28,7 +29,6 @@ public abstract class OrderRequestMapperDecorator implements OrderRequestMapper 
                 orderItem -> OrderItem.builder()
                                 .order(order)
                                 .productId(orderItem.getProductId())
-                                .price(orderItem.getPrice())
                                 .quantity(orderItem.getQuantity())
                             .build())
                 .collect(Collectors.toSet());

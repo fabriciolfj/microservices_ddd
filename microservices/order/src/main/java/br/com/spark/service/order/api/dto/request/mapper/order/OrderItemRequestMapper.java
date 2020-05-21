@@ -9,7 +9,6 @@ import org.mapstruct.Mapping;
 public interface OrderItemRequestMapper {
 
     @Mapping(source = "quantity", target = "quantity")
-    @Mapping(source = "price", target = "price")
     @Mapping(source = "productId", target = "productId")
     OrderItem toDomain(final OrderItemRequestDto dto);
 }

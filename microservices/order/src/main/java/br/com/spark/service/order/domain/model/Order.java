@@ -22,6 +22,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -51,21 +52,16 @@ public class Order {
     @Column(name = "customer_id", nullable = false)
     private Long customerId;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.REMOVE })
+    @OneToOne(fetch = FetchType.LAZY, cascade = {CascadeType.REMOVE})
     @JoinColumn(name = "payment_id")
     private Payment payment;
 
-    @OneToMany(mappedBy = "order", cascade = { CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.DETACH } )
+    @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.DETACH})
     private Set<OrderItem> orderItems = new HashSet<>();
 
-    private void updateTotal() {
+    public void updateTotal() {
         this.totalPrice =
                 this.orderItems.stream().map(o -> o.getPrice().multiply(BigDecimal.valueOf(o.getQuantity())))
-                .reduce(BigDecimal.ZERO, (total, element) -> total.add(element));
-    }
-
-    public void addItens(OrderItem orderItem) {
-        this.orderItems.add(orderItem);
-        updateTotal();
+                        .reduce(BigDecimal.ZERO, (total, element) -> total.add(element));
     }
 }
