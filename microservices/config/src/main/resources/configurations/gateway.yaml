@@ -1,0 +1,14 @@
+server:
+  port: 8222
+
+zuul:
+  routes:
+    order:
+      path: /order/**
+      serviceId: order
+    product:
+      path: /product/**
+      serviceId: product
+    customer:
+      path: /customer/**
+      serviceId: customer

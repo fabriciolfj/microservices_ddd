@@ -3,7 +3,6 @@ package br.com.spark.service.order.domain.service;
 import br.com.spark.service.order.api.dto.response.OrderResponseDto;
 import br.com.spark.service.order.api.dto.response.mapper.order.OrderResponseMapper;
 import br.com.spark.service.order.domain.core.integration.client.CustomerServiceClient;
-import br.com.spark.service.order.domain.core.integration.client.ProductServiceClient;
 import br.com.spark.service.order.domain.exceptions.OrderDuplicatePaymentException;
 import br.com.spark.service.order.domain.exceptions.OrderNotFoundException;
 import br.com.spark.service.order.domain.model.Address;
@@ -16,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -33,7 +31,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderResponseMapper mapper;
     private final OrderItemService orderItemService;
-    private final ProductServiceClient productServiceClient;
+    private final ProductService productService;
     private final CustomerServiceClient customerServiceClient;
 
     @Transactional(readOnly = true, propagation = Propagation.NEVER)
@@ -66,7 +64,7 @@ public class OrderService {
     }
 
     private OrderItem getPriceItem(final OrderItem item) {
-        var dto = productServiceClient.findByProduct(item.getProductId());
+        var dto = productService.getProduct(item.getProductId());
         item.setPrice(dto.getPrice());
         return item;
     }

@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: dash-hytrix
+  cloud:
+    config:
+      uri:
+        - http://localhost:8888
