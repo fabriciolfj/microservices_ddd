@@ -11,6 +11,6 @@ import org.mapstruct.Mapping;
 public interface PaymentRequestMapper {
 
     @Mapping(source = "paypalPaymentId", target = "paypalPaymentId")
-    @Mapping(source = "status", target = "status")
+    @Mapping(source = "status", target = "status", ignore = true)
     Payment toDomain(final PaymentRequestDto dto);
 }

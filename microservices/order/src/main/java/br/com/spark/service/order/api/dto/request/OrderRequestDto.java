@@ -1,18 +1,20 @@
 package br.com.spark.service.order.api.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.math.BigDecimal;
-import java.time.ZonedDateTime;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Set;
 
-@Data
-@AllArgsConstructor
+
+@Getter
+@Setter
 public class OrderRequestDto {
 
+    @NotNull
     private Long customerId;
-    private BigDecimal totalPrice;
-    private String status;
+    @NotEmpty
     private Set<OrderItemRequestDto> orderItems;
 }

@@ -12,7 +12,6 @@ public interface OrderResponseMapper {
 
     @Mapping(source = "totalPrice", target = "totalPrice")
     @Mapping(source = "id", target = "id")
-    @Mapping(source = "customerId", target = "customerId")
     OrderResponseDto toDto(final Order order);
 }
 

@@ -30,7 +30,7 @@ public abstract class OrderResponseMapperDecorator implements OrderResponseMappe
                 .getOrderItems()
                 .stream().map(o -> orderItemResponseMapper.toDto(o)).collect(Collectors.toSet()));
         order.setAddress(addressResponseMapper.toDto(entity.getShipmentAddress()));
-        order.setShipped(entity.getShipped().toString());
+        order.setShipped(entity.getShipped());
         return order;
     }
 }

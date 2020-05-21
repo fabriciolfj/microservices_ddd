@@ -10,8 +10,7 @@ import org.mapstruct.Mapping;
 @DecoratedWith(OrderRequestMapperDecorator.class)
 public interface OrderRequestMapper {
 
-    @Mapping(source = "totalPrice", target = "totalPrice")
     @Mapping(source = "customerId", target = "customerId")
+    @Mapping(source = "orderItems", target = "orderItems", ignore = true)
     Order toDomain(final OrderRequestDto dto);
-
 }

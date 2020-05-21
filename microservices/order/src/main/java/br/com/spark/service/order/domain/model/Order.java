@@ -1,15 +1,26 @@
 package br.com.spark.service.order.domain.model;
 
-import br.com.spark.service.order.domain.model.enuns.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -18,7 +29,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "orders")
+@Table(name = "ordercart")
 public class Order {
 
     @Id
@@ -29,14 +40,9 @@ public class Order {
     @ToString.Include
     private BigDecimal totalPrice;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    @ToString.Include
-    private OrderStatus status;
-
     @Column(name = "shipped")
     @ToString.Include
-    private ZonedDateTime shipped;
+    private LocalDate shipped;
 
     @Embedded
     @ToString.Include
@@ -45,14 +51,21 @@ public class Order {
     @Column(name = "customer_id", nullable = false)
     private Long customerId;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = { CascadeType.REMOVE })
     @JoinColumn(name = "payment_id")
     private Payment payment;
 
-    @OneToMany(mappedBy = "order")
-    private Set<OrderItem> orderItems;
+    @OneToMany(mappedBy = "order", cascade = { CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.DETACH } )
+    private Set<OrderItem> orderItems = new HashSet<>();
 
-    public void updateTotal(BigDecimal price) {
-        this.totalPrice = this.totalPrice.add(price);
+    private void updateTotal() {
+        this.totalPrice =
+                this.orderItems.stream().map(o -> o.getPrice().multiply(BigDecimal.valueOf(o.getQuantity())))
+                .reduce(BigDecimal.ZERO, (total, element) -> total.add(element));
+    }
+
+    public void addItens(OrderItem orderItem) {
+        this.orderItems.add(orderItem);
+        updateTotal();
     }
 }

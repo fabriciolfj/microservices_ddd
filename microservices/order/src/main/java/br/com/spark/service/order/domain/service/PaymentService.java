@@ -22,6 +22,7 @@ public class PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final PaymentResponseMapper mapper;
+    private final OrderService orderService;
 
     @Transactional(readOnly = true, propagation = Propagation.NEVER)
     public List<PaymentResponseDto> findAll() {
@@ -39,9 +40,10 @@ public class PaymentService {
     }
 
     @Transactional(propagation = Propagation.REQUIRED)
-    public void create(Payment payment) {
+    public void create(Payment payment, Long orderId) {
         log.debug("Request to create Payment : {}", payment);
         this.paymentRepository.save(payment);
+        orderService.updatePayment(payment, orderId);
     }
 
     @Transactional(propagation = Propagation.REQUIRED)

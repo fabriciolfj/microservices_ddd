@@ -1,13 +1,12 @@
 package br.com.spark.service.order.api.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 public class PaymentRequestDto {
 
     private String paypalPaymentId;
     private String status;
-    private Long orderId;
 }

@@ -23,7 +23,6 @@ public class OrderItemService {
 
     private final OrderItemRepository orderItemRepository;
     private final OrderItemResponseMapper mapper;
-    private final OrderService orderService;
 
     @Transactional(readOnly = true, propagation = Propagation.NEVER)
     public List<OrderItemResponseDto> findAll() {
@@ -42,17 +41,10 @@ public class OrderItemService {
                 .orElseThrow(() -> new OrderItemNotFoundException("Order item not found: " + id));
     }
 
-    public OrderItemResponseDto create(final OrderItem orderItem) {
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void create(final OrderItem orderItem) {
         log.debug("Request to create OrderItem : {}", orderItem);
-        var order = orderService.findEntity(orderItem.getOrder().getId());
-
-        updateTotalOrder(order, orderItem);
-        return mapper.toDto(this.orderItemRepository.save(orderItem));
-    }
-
-    private void updateTotalOrder(Order order, OrderItem orderItem) {
-        order.updateTotal(orderItem.getPrice().multiply(BigDecimal.valueOf(orderItem.getQuantity())));
-        orderService.update(order);
+        orderItemRepository.save(orderItem);
     }
 
     public void delete(Long id) {

@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 @ToString
 public enum  PaymentStatus {
 
-    ACCEPTED("accepted"), PENDING("pending"), REFUSED("refused"), ERROR("error");
+    ACCEPTED("accepted"), REFUSED("refused");
 
     private String describe;
 
