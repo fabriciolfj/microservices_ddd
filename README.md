@@ -7,7 +7,7 @@ A arquitetura de microservices segue os seguintes padrões:
 - log centralizado
 	- centralizamos os logs utilizando o ELK (elasticsearch, logstash e kibana)
 - uso de um gateway
-	- Embora o zuul seja sincrono  e está em manutenção, utilizamos o mesmo, mas é sugerido o uso do spring cloud gateway por ser reativo.
+	- Utilizamos o zuul, embora seja sincrono e encontra-se em manutenção (é sugerido o uso do spring cloud gateway por ser reativo).
 - discovery service
 	- uso do eureka
 - circuite breaker
