@@ -11,6 +11,5 @@ public interface CustomerResquestMapper {
 
     @Mapping(source = "name", target = "name")
     @Mapping(source = "email", target = "email")
-    @Mapping(source = "telephone", target = "telephone")
     Customer toDomain(final CustomerRequestDto dto);
 }

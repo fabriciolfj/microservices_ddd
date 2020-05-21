@@ -8,5 +8,4 @@ import lombok.Setter;
 public class CustomerRequestDto {
     private String name;
     private String email;
-    private String telephone;
 }

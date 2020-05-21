@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static br.com.spark.service.product.web.Web.API;
+import static br.com.spark.service.product.infrastructure.web.Web.API;
 
 
 @RequiredArgsConstructor

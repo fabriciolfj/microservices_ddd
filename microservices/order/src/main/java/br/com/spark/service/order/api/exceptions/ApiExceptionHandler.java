@@ -1,5 +1,8 @@
 package br.com.spark.service.order.api.exceptions;
 
+import br.com.spark.service.order.domain.core.integration.client.CustomerServiceClient;
+import br.com.spark.service.order.domain.exceptions.CustomerFailConsumerException;
+import br.com.spark.service.order.domain.exceptions.CustomerNotFoundException;
 import br.com.spark.service.order.domain.exceptions.OrderDuplicatePaymentException;
 import br.com.spark.service.order.domain.exceptions.OrderItemNotFoundException;
 import br.com.spark.service.order.domain.exceptions.OrderNotFoundException;
@@ -154,6 +157,16 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(StatusOrderInvalidException.class)
     public ResponseEntity<?> handleStatusOrderInvalidException(StatusOrderInvalidException e, WebRequest request){
+        return handleExceptionInternal(e, e.getMessage(), new HttpHeaders(), HttpStatus.CONFLICT, request);
+    }
+
+    @ExceptionHandler(CustomerNotFoundException.class)
+    public ResponseEntity<?> handleCustomerNotFoundException(CustomerNotFoundException e, WebRequest request){
+        return handleExceptionInternal(e, e.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+    }
+
+    @ExceptionHandler(CustomerFailConsumerException.class)
+    public ResponseEntity<?> handleCustomerFailConsumerException(CustomerFailConsumerException e, WebRequest request){
         return handleExceptionInternal(e, e.getMessage(), new HttpHeaders(), HttpStatus.CONFLICT, request);
     }
 

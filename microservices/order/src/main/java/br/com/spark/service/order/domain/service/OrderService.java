@@ -2,6 +2,7 @@ package br.com.spark.service.order.domain.service;
 
 import br.com.spark.service.order.api.dto.response.OrderResponseDto;
 import br.com.spark.service.order.api.dto.response.mapper.order.OrderResponseMapper;
+import br.com.spark.service.order.domain.core.integration.client.CustomerServiceClient;
 import br.com.spark.service.order.domain.core.integration.client.ProductServiceClient;
 import br.com.spark.service.order.domain.exceptions.OrderDuplicatePaymentException;
 import br.com.spark.service.order.domain.exceptions.OrderNotFoundException;
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -32,6 +34,7 @@ public class OrderService {
     private final OrderResponseMapper mapper;
     private final OrderItemService orderItemService;
     private final ProductServiceClient productServiceClient;
+    private final CustomerServiceClient customerServiceClient;
 
     @Transactional(readOnly = true, propagation = Propagation.NEVER)
     public List<OrderResponseDto> findAll() {
@@ -53,6 +56,8 @@ public class OrderService {
     @Transactional(propagation = Propagation.REQUIRED)
     public OrderResponseDto create(final Order order) {
         log.debug("Request to create Order : {}", order);
+        customerServiceClient.getCustomer(order.getCustomerId());
+
         order.setShipped(LocalDate.now());
         order.getOrderItems().stream().forEach(this::getPriceItem);
         order.updateTotal();
