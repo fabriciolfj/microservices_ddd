@@ -15,6 +15,8 @@ A arquitetura de microservices segue os seguintes padrões:
 	 Abaixo um exemplo de uso do hystrix dashboard
 - load balance
 	- uso do ribbon, pois o mesmo encontra-se no eureka.
+- rastreamento
+	- utilizou-se o sleuth que gera hash a cada requisição externa e uso do zipkin para acompanhamento visual.				
 
 
 ###### Detalhes do uso do hystrix dashboard
