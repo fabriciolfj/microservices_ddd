@@ -18,12 +18,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static br.com.spark.service.customer.infrastructure.web.Web.API;
-
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(API + "/customers")
+@RequestMapping("/customers")
 public class CustomerController {
 
     private final CustomerService customerService;

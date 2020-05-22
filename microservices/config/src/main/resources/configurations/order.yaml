@@ -1,5 +1,5 @@
 server:
-  port: 9090
+  port: 8081
 
 customer.url: http://customer
 spring:
@@ -21,3 +21,27 @@ management:
       exposure:
         include: "*"
 
+app:
+  eureka-server: localhost
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: "http://${app.eureka-server}:8761/eureka/"
+    initialInstanceInfoReplicationIntervalSeconds: 5
+    registryFetchIntervalSeconds: 5
+  instance:
+    leaseRenewalIntervalInSeconds: 5
+    leaseExpirationDurationInSeconds: 5
+
+---
+server:
+  port: 8080
+spring:
+  profiles:
+    - docker
+app:
+  eureka-server: eureka
+
+spring.datasource:
+  url: jdbc:mysql://mysql/docker

@@ -15,12 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static br.com.spark.service.product.infrastructure.web.Web.API;
-
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(API + "/products")
+@RequestMapping("/products")
 public class ProductController {
     private final ProductService productService;
     private final ProductRequestMapper mapper;

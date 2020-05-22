@@ -5,18 +5,18 @@ import br.com.spark.service.order.api.dto.request.mapper.payment.PaymentRequestM
 import br.com.spark.service.order.domain.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import static br.com.spark.service.order.infrastructure.web.Web.API;
 
-
+@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(API + "/payments")
+@RequestMapping("/payments")
 public class PaymentController {
 
     private final PaymentService paymentService;

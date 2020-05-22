@@ -10,6 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name= "product", decode404 = true, configuration = FeignConfiguration.class)
 public interface ProductServiceClient {
 
-    @GetMapping(value = "/api/products/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/products/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     ProductResponseDto findByProduct(@PathVariable final Long id);
 }

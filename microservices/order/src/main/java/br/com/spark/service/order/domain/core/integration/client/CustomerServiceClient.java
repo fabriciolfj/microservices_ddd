@@ -1,32 +1,15 @@
 package br.com.spark.service.order.domain.core.integration.client;
 
-import br.com.spark.service.order.domain.exceptions.CustomerFailConsumerException;
-import br.com.spark.service.order.domain.exceptions.CustomerNotFoundException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
+import br.com.spark.service.order.domain.core.integration.client.dto.ProductResponseDto;
+import br.com.spark.service.order.infrastructure.config.feign.FeignConfiguration;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
-@Component
-public class CustomerServiceClient {
+@FeignClient(name= "customer", decode404 = true, configuration = FeignConfiguration.class)
+public interface CustomerServiceClient {
 
-    @Value("${customer.url}")
-    private String url;
-    @Autowired
-    private RestTemplate restTemplate;
-
-    public void getCustomer(final Long id) {
-        try {
-            restTemplate.getForEntity(url + "/api/customers/" + id, String.class);
-        } catch (Exception e) {
-            if (e instanceof HttpClientErrorException) {
-                if (((HttpClientErrorException) e).getStatusCode().is4xxClientError()) {
-                    throw new CustomerNotFoundException("Customer not found: " + id);
-                }
-            }
-
-            throw new CustomerFailConsumerException("Fail consumer customer service");
-        }
-    }
+    @GetMapping(value = "/customers/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    ProductResponseDto getCustomer(@PathVariable final Long id);
 }

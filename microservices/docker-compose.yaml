@@ -1,0 +1,118 @@
+version: '2.1'
+
+services:
+  mysql:
+    networks:
+      - my-network
+    image: mysql:5.7.30
+    mem_limit: 350m
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=megatron
+      - MYSQL_DATABASE=docker
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-uuser", "-ppwd", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  product:
+    networks:
+      - my-network
+    image: fabricio211/product-service:1.0.0
+    mem_limit: 350m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - 8082:8082
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  order:
+    networks:
+      - my-network
+    image: fabricio211/order-service:1.0.0
+    mem_limit: 350m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - 8081:8081
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  customer:
+    networks:
+      - my-network
+    image: fabricio211/customer-service:1.0.0
+    mem_limit: 350m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    ports:
+      - 8083:8083
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  eureka:
+    networks:
+      - my-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    image: fabricio211/discovery-server:1.0.0
+    ports:
+      - 8761:8761
+    mem_limit: 350m
+
+  gateway-new:
+    networks:
+      - my-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    image: fabricio211/gateway-new:1.0.0
+    mem_limit: 350m
+    ports:
+      - 8443:8443
+
+  config-server:
+    networks:
+      - my-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker,native
+    image: fabricio211/config-server:1.0.0
+    mem_limit: 350m
+
+  zipkin:
+    image: openzipkin/zipkin:2.12.9
+    networks:
+      - my-network
+    environment:
+      - RABBIT_ADDRESSES=rabbitmq
+      - STORAGE_TYPE=mem
+    mem_limit: 512m
+    ports:
+      - 9411:9411
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  rabbitmq:
+    networks:
+      - my-network
+    image: rabbitmq:3.7.8-management
+    mem_limit: 350m
+    ports:
+      - 5672:5672
+      - 15672:15672
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+
+networks:
+  my-network:
+    name: my-network
