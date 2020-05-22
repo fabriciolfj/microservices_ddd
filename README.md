@@ -4,10 +4,8 @@ Neste projeto adotamos as práticas do DDD, afim de migrar um monolito para uma 
 A arquitetura de microservices segue os seguintes padrões:
 - configuração extenalizada.
 	- para este requisito utilizamos a stack spring cloud config.
-- log centralizado
-	- centralizamos os logs utilizando o ELK (elasticsearch, logstash e kibana)
 - uso de um gateway
-	- Utilizamos o zuul, embora seja sincrono e encontra-se em manutenção (é sugerido o uso do spring cloud gateway por ser reativo).
+	- utilizamos o novo gateway do spring.
 - discovery service
 	- uso do eureka
 - circuite breaker
@@ -28,4 +26,10 @@ http://localhost:9090/actuator/hystrix.stream
 - inserir o endpoint acima na dash: 
 ```
 http://localhost:8988/hystrix
+```
+
+### Montando o ambiente
+```
+docker-compose up
+
 ```
