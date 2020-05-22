@@ -47,7 +47,10 @@ docker run --name zipkin -d -p 9411:9411 openzipkin/zipkin
 
 docker run --name hystrix-dashboard --link config-server --link eureka-server -d -e SPRING_CLOUD_CONFIG_URI=http://config-server:8888  -e EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/ -p 8988:8988 fabricio211/dash-hytrix:0.0.1-SNAPSHOT
 
-docker run --name product-service --link config-server --link eureka-server --link mysql -d -e SPRING_CLOUD_CONFIG_URI=http://config-server:8888  -e EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/ -e SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/product -p 9990:9990 fabricio211/product:0.0.1-SNAPSHOT
+docker run --name product-service --link config-server --link eureka-server --link mysql --link zipkin -d -e SPRING_CLOUD_CONFIG_URI=http://config-server:8888  -e EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/ -e SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/product -e SPRING_ZIPKIN_BASE_URL=http://zipkin:9411 -p 9990:9990 fabricio211/product:0.0.1-SNAPSHOT
 
+docker run --name order-service --link config-server --link eureka-server --link mysql --link zipkin -d -e SPRING_CLOUD_CONFIG_URI=http://config-server:8888  -e EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/ -e SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/ordertest -e SPRING_ZIPKIN_BASE_URL=http://zipkin:9411 -p 9991:9991 fabricio211/order:0.0.1-SNAPSHOT
+
+docker run --name customer-service --link config-server --link eureka-server --link mysql --link zipkin -d -e SPRING_CLOUD_CONFIG_URI=http://config-server:8888  -e EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/ -e SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/customer -e SPRING_ZIPKIN_BASE_URL=http://zipkin:9411 -p 9992:9992 fabricio211/customer:0.0.1-SNAPSHOT
 
 ```
