@@ -27,3 +27,10 @@ http://localhost:9090/actuator/hystrix.stream
 ```
 http://localhost:8988/hystrix
 ```
+
+### Montando o ambiente
+Utilizamos um plugin do google, jib-maven, para facilitar a criação das images dos serviço.
+Comando:
+```
+mvn compile jib:dockerBuild
+```
