@@ -35,7 +35,7 @@ Comando:
 mvn compile jib:dockerBuild
 ```
 
-Subindo os containers (pode-se montar um docker-compose.yaml)
+Subindo os containers manualmente (primeira alternativa):
 ```
 docker run --name config-server -d -p 8888:8888 fabricio211/config:0.0.1-SNAPSHOT
 
