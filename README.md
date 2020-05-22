@@ -38,4 +38,5 @@ mvn compile jib:dockerBuild
 Subindo os containers (pode-se montar um docker-compose.yaml)
 ```
 docker run --name config-server -d -p 8888:8888 fabricio211/config:0.0.1-SNAPSHOT
+docker run --link config-server -d -e SPRING_CLOUD_CONFIG_URI=http://config-server:8888 --name eureka-server -p 8761:8761 fabricio211/discovery:0.0.1-SNAPSHOT
 ```
