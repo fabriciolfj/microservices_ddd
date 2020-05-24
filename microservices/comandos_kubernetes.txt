@@ -4,6 +4,15 @@ Criando o configmap da base de dados:
 Listando o configmap:
  kubectl get cm mysql-config -o json
 
-Craindo secret:
+Criando secret:
  kubectl create secret generic db-security --from-literal=db.user.name=root --from-literal=db.user.password=megatron
  kubectl get secret db-security -o json
+
+
+Criando configmap de cada serviço:
+ kubectl create configmap order --from-file=application.yaml=application.yaml
+ kubectl create configmap customer --from-file=application.yaml=application.yaml
+ kubectl create configmap product --from-file=application.yaml=application.yaml
+
+Autorizando o serviceaccount para acessar o configmap do mesmo namespace:
+ kubectl create clusterrolebinding configmap-access --clusterrole view --serviceaccount=default:spring

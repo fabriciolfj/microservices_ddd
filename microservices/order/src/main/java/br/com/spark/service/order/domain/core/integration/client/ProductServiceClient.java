@@ -7,7 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name= "product", decode404 = true, configuration = FeignConfiguration.class)
+@FeignClient(url= "http://product", decode404 = true, configuration = FeignConfiguration.class)
 public interface ProductServiceClient {
 
     @GetMapping(value = "/products/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)

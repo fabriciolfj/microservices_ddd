@@ -4,12 +4,8 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/order/pom.xml" />
-        <option value="$PROJECT_DIR$/config/pom.xml" />
         <option value="$PROJECT_DIR$/product/pom.xml" />
         <option value="$PROJECT_DIR$/customer/pom.xml" />
-        <option value="$PROJECT_DIR$/discovery/pom.xml" />
-        <option value="$PROJECT_DIR$/dash-hytrix/pom.xml" />
-        <option value="$PROJECT_DIR$/gateway-new/pom.xml" />
       </list>
     </option>
   </component>

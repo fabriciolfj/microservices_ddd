@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: order
+  cloud:
+    kubernetes:
+      reload:
+        strategy: true
