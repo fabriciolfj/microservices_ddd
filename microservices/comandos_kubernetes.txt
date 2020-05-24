@@ -1,0 +1,9 @@
+Criando o configmap da base de dados:
+ kubectl create configmap mysql-config --from-literal=mysql.service.name=mysql --from-literal=mysql.db.name=boutique
+
+Listando o configmap:
+ kubectl get cm mysql-config -o json
+
+Craindo secret:
+ kubectl create secret generic db-security --from-literal=db.user.name=root --from-literal=db.user.password=megatron
+ kubectl get secret db-security -o json
