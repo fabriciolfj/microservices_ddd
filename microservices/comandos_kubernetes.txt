@@ -20,11 +20,6 @@ Criando secret:
  kubectl get secret db-security -o json
 
 
-Criando configmap de cada serviço:
- kubectl create configmap order --from-file=application.yaml=application.yaml
- kubectl create configmap customer --from-file=application.yaml=application.yaml
- kubectl create configmap product --from-file=application.yaml=application.yaml
-
 Autorizando o serviceaccount para acessar o configmap do mesmo namespace:
  kubectl create clusterrolebinding configmap-access --clusterrole view --serviceaccount=default:spring
 
