@@ -33,3 +33,7 @@ http://localhost:8988/hystrix
 docker-compose up
 
 ```
+
+### kubernetes
+A branch kubernetes, retiramos todas as stacks do spring cloud e substituimos pelo k8s. Existe um passo a passo simples para realizar o deploy.
+obs: precisa previamente do minikube.
