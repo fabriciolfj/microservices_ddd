@@ -34,3 +34,7 @@ Instalando o EFK (necessita antes instalar o helm - um gerenciador de pacotes pa
 Gateway do kubernetes:
  kubectl create -f gateway.yaml
 
+Habilitando o minikube:
+  minikube addons enable ingress
+
+
