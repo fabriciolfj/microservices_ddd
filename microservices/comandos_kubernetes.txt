@@ -12,25 +12,8 @@ Criando o configmap da base de dados:
 Listando o configmap:
  kubectl get cm mysql-config -o json
 
-Criando secret:
- kubectl create secret generic mysql-server-credentials \
-     --from-literal=MYSQL_ROOT_PASSWORD=megatron \
-     --from-literal=MYSQL_DATABASE=boutique \
-     --save-config
- kubectl get secret db-security -o json
-
-
 Autorizando o serviceaccount para acessar o configmap do mesmo namespace:
  kubectl create clusterrolebinding configmap-access --clusterrole view --serviceaccount=default:spring
-
-Instalando o EFK (necessita antes instalar o helm - um gerenciador de pacotes para o kubernetes)
- helm repo add akomljen-charts  https://raw.githubusercontent.com/komljen/helm-charts/master/charts/
- helm install es-operator --namespace logging akomljen-charts/elasticsearch-operator
- helm install efk --namespace logging akomljen-charts/efk
- ver as apís instaladas: kubectl get crd
-
-Gateway do kubernetes:
- kubectl create -f gateway.yaml
 
 Habilitando o minikube:
   minikube addons enable ingress
