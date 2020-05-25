@@ -1,0 +1,4 @@
+criar um namespace ingress
+Fazer mos deploys da pasta ingress no namespace ingress
+fazer os demais deploys no namespace default
+habilitar o ingress do minikube

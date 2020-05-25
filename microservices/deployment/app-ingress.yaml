@@ -1,0 +1,31 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  name: app-ingress
+spec:
+  rules:
+  - host: api.estudo.kubernetes # Mude para o seu endereço
+    http:
+      paths:
+      - backend:
+          serviceName: products
+          servicePort: 8080
+        path: /register
+      - backend:
+          serviceName: order
+          servicePort: 8080
+        path: /send
+      - backend:
+          serviceName: customer
+          servicePort: 8080
+        path: /person
+      - backend:
+          serviceName: appsvc1
+          servicePort: 80
+        path: /app1
+      - backend:
+          serviceName: appsvc2
+          servicePort: 80
+        path: /app2
