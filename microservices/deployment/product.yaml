@@ -67,7 +67,7 @@ spec:
   selector:
     app: product
   ports:
-    - targetPort: 8080
+    - name: http
+      targetPort: 8080
       port: 8080
-      nodePort: 30081
 
