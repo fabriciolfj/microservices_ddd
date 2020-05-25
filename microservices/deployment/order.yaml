@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: order
+  template:
+    metadata:
+      labels:
+        app: order
+        version: latest
+    spec:
+      containers:
+        - name: order
+          image: fabricio211/order-service
+          imagePullPolicy: Never
+          env:
+            - name: SPRING_CONFIG_LOCATION
+              value: file:/config-repo/application.yml,file:/config-repo/order.yml
+          envFrom:
+            - secretRef:
+                name: mysql-server-credentials
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              memory: 350Mi
+          livenessProbe:
+            httpGet:
+              scheme: HTTP
+              path: /actuator/info
+              port: 4004
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 30
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              scheme: HTTP
+              path: /actuator/health
+              port: 4004
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
+            successThreshold: 1
+          volumeMounts:
+            - name: config-repo-volume
+              mountPath: /config-repo
+      volumes:
+        - name: config-repo-volume
+          configMap:
+            name: config-repo-order
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: order
+spec:
+  selector:
+    app: order
+  ports:
+    - name: http
+      port: 80
+      targetPort: 80
+

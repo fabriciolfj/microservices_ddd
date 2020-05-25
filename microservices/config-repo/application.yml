@@ -1,0 +1,15 @@
+spring:
+  sleuth:
+    sampler:
+      probability: 1
+  datasource:
+    url: jdbc:mysql://mysql:3306/boutique
+    username: root
+    password: megatron
+  jpa:
+    hibernate:
+      ddl-auto: 'update'
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL57Dialect
+    show-sql: true

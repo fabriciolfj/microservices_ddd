@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: product
+  template:
+    metadata:
+      labels:
+        app: product
+        version: latest
+    spec:
+      containers:
+        - name: product
+          image: fabricio211/product-service
+          imagePullPolicy: Never
+          env:
+            - name: SPRING_CONFIG_LOCATION
+              value: file:/config-repo/application.yml,file:/config-repo/product.yml
+          envFrom:
+            - secretRef:
+                name: mysql-server-credentials
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              memory: 350Mi
+          livenessProbe:
+            httpGet:
+              scheme: HTTP
+              path: /actuator/info
+              port: 4004
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 30
+            successThreshold: 1
+          readinessProbe:
+            httpGet:
+              scheme: HTTP
+              path: /actuator/health
+              port: 4004
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
+            successThreshold: 1
+          volumeMounts:
+            - name: config-repo-volume
+              mountPath: /config-repo
+      volumes:
+        - name: config-repo-volume
+          configMap:
+            name: config-repo-product
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: product
+spec:
+  type: NodePort
+  selector:
+    app: product
+  ports:
+    - targetPort: 8080
+      port: 8080
+      nodePort: 30081
+
