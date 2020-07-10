@@ -6,8 +6,8 @@ kubectl create secret generic mysql-server-credentials \
 
 Criando o configmap da base de dados:
  kubectl create configmap config-repo-product --from-file=config-repo/application.yml --from-file=config-repo/product.yml --save-config
- kubectl create configmap config-repo-order --from-file=config-repo/application.yml --from-file=config-repo/product.yml --save-config
- kubectl create configmap config-repo-customer --from-file=config-repo/application.yml --from-file=config-repo/product.yml --save-config
+ kubectl create configmap config-repo-order --from-file=config-repo/application.yml --from-file=config-repo/order.yml --save-config
+ kubectl create configmap config-repo-customer --from-file=config-repo/application.yml --from-file=config-repo/customer.yml --save-config
 
 Listando o configmap:
  kubectl get cm mysql-config -o json

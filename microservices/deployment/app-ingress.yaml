@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    kubernetes.io/ingress.allow-http: "false"
   name: app-ingress
 spec:
   rules:
@@ -12,15 +12,15 @@ spec:
       - backend:
           serviceName: products
           servicePort: 8080
-        path: /register
+        path: /products
       - backend:
           serviceName: order
           servicePort: 8080
-        path: /send
+        path: /orders
       - backend:
           serviceName: customer
           servicePort: 8080
-        path: /person
+        path: /customers
       - backend:
           serviceName: appsvc1
           servicePort: 80
